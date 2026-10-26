@@ -1,0 +1,34 @@
+import type { Models } from "appwrite";
+import { Link } from "react-router-dom";
+
+import FollowButton from "./FollowButton";
+
+import { ASSETS } from "../../constants";
+type UserCardProps = {
+  user: Models.DefaultDocument;
+};
+
+const UserCard = ({ user }: UserCardProps) => {
+  return (
+    <Link to={`/profile/${user.$id}`} className="user-card">
+      <img
+        src={user.imageUrl || ASSETS.avatarPlaceholder}
+        alt="creator"
+        className="rounded-full w-14 h-14"
+      />
+
+      <div className="flex-center flex-col gap-1">
+        <p className="base-medium text-light-1 text-center line-clamp-1">
+          {user.name}
+        </p>
+        <p className="small-regular text-light-3 text-center line-clamp-1">
+          @{user.username}
+        </p>
+      </div>
+
+      <FollowButton targetUserId={user.$id} size="sm" className="px-5" />
+    </Link>
+  );
+};
+
+export default UserCard;
