@@ -18,6 +18,11 @@ export async function createUserAccount(user: INewUser) {
 
         if(!newAccount) throw new Error("Account creation failed");
 
+        // Zapis do tabeli users wymaga zalogowanego użytkownika (rola "Users"),
+        // więc najpierw tworzymy sesję dla nowego konta.
+        const session = await signInAccount({ email: user.email, password: user.password });
+        if(!session) throw new Error("Session creation failed");
+
         const avatarUrl = avatars.getInitials(user.name);
 
         const newUser = await saveUserToDB({
